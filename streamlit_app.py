@@ -1,7 +1,7 @@
 import streamlit as st
 import logging
 
-logging.info("Importing openai embeddings")
+print("Importing openai embeddings")
 from langchain.embeddings.openai import OpenAIEmbeddings
 logging.info("Importing text splitter")
 from langchain.text_splitter import CharacterTextSplitter
