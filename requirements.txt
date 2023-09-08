@@ -2,3 +2,4 @@ pre-commit
 langchain
 openai
 faiss-cpu
+tiktoken
