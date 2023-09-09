@@ -5,6 +5,12 @@ from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 import time
 import os
+from streamlit.runtime.scriptrunner import get_script_run_ctx
+
+
+ctx = get_script_run_ctx()
+session_id = ctx.session_id
+
 
 st.title("Hi, I am here to tell You about Mikołaj. Go ahead and ask me some questions!")
 
