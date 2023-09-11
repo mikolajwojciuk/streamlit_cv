@@ -17,7 +17,7 @@ DB_URL = os.environ.get("DB_URL")
 DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
-USE_MODEL = os.environ.get("USE_MODEL")
+USE_MODEL = bool(os.environ.get("USE_MODEL"))
 
 
 
