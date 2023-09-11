@@ -17,6 +17,10 @@ DB_URL = os.environ.get("DB_URL")
 DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
+USE_MODEL = os.environ.get("USE_MODEL")
+
+
+
 
 st.title("Hi, I am here to tell You about Mikołaj. Go ahead and ask me some questions!")
 
@@ -69,10 +73,13 @@ if st.session_state.user_name:
         # Add user message to chat history
         st.session_state.messages.append({"role": "user", "content": query})
         # Generate response
-        relevant_docs = st.session_state.faiss_db.similarity_search(query)
-        response = st.session_state.qa_chain.run(
-            input_documents=relevant_docs, question=query
-        )
+        if USE_MODEL:
+            relevant_docs = st.session_state.faiss_db.similarity_search(query)
+            response = st.session_state.qa_chain.run(
+                input_documents=relevant_docs, question=query
+            )
+        else:
+            response = f"Echo: {query}"
         # Save response to db
         log_items = [
             {
