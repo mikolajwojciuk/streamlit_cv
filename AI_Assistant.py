@@ -3,6 +3,7 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
+from langchain.prompts import PromptTemplate
 import time
 import os
 from streamlit.runtime.scriptrunner import get_script_run_ctx
@@ -18,6 +19,41 @@ DB_USER = os.environ.get("DB_USER")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
 USE_MODEL = bool(os.environ.get("USE_MODEL"))
+
+prompt_template = """Use the following pieces of context to answer the question at the end.
+If you do not know the answer, just say that you don't know or that one should ask Mikołaj about this, don't try to make up an answer.
+
+{context}
+
+Question: {question}
+Answer:
+
+"""
+
+PROMPT = PromptTemplate(
+    template=prompt_template, input_variables=["context", "question"]
+)
+
+if "db" not in st.session_state:
+    st.session_state.db = harperdb.HarperDB(
+        url=DB_URL, username=DB_USER, password=DB_PASSWORD
+    )
+
+if "faiss_db" not in st.session_state:
+    st.session_state.faiss_db = FAISS.load_local("faiss_index", OpenAIEmbeddings())
+
+if "qa_chain" not in st.session_state:
+    st.session_state.qa_chain = load_qa_chain(
+        llm=OpenAI(model_name="gpt-3.5-turbo", temperature=0.1),
+        chain_type="stuff",
+        prompt=PROMPT,
+    )
+
+if "user_name" not in st.session_state:
+    st.session_state.user_name = ""
+
+if "name_available" not in st.session_state:
+    st.session_state.name_available = True
 
 
 st.set_page_config(
@@ -35,25 +71,6 @@ st.sidebar.write(
 
 st.title("Hi, I am here to tell You about Mikołaj. Go ahead and ask me some questions!")
 
-
-if "db" not in st.session_state:
-    st.session_state.db = harperdb.HarperDB(
-        url=DB_URL, username=DB_USER, password=DB_PASSWORD
-    )
-
-if "faiss_db" not in st.session_state:
-    st.session_state.faiss_db = FAISS.load_local("faiss_index", OpenAIEmbeddings())
-
-if "qa_chain" not in st.session_state:
-    st.session_state.qa_chain = load_qa_chain(
-        llm=OpenAI(model_name="gpt-3.5-turbo", temperature=0.1), chain_type="stuff"
-    )
-
-if "user_name" not in st.session_state:
-    st.session_state.user_name = ""
-
-if "name_available" not in st.session_state:
-    st.session_state.name_available = True
 
 text_input_container = st.empty()
 text_input_container.text_input(
@@ -87,8 +104,11 @@ if st.session_state.user_name:
         # Generate response
         if USE_MODEL:
             relevant_docs = st.session_state.faiss_db.similarity_search(query)
-            response = st.session_state.qa_chain.run(
-                input_documents=relevant_docs, question=query
+            # response = st.session_state.qa_chain.run(
+            #    input_documents=relevant_docs, question=query
+            # )
+            response = st.session_state.qa_chain(
+                {"input_documents": relevant_docs, "question": query}
             )
         else:
             response = f"Echo: {query}"
