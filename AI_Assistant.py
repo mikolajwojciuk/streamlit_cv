@@ -104,12 +104,10 @@ if st.session_state.user_name:
         # Generate response
         if USE_MODEL:
             relevant_docs = st.session_state.faiss_db.similarity_search(query)
-            # response = st.session_state.qa_chain.run(
-            #    input_documents=relevant_docs, question=query
-            # )
             response = st.session_state.qa_chain(
-                {"input_documents": relevant_docs, "question": query}
-            )
+                {"input_documents": relevant_docs, "question": query},
+                return_only_outputs=True,
+            )["output_text"]
         else:
             response = f"Echo: {query}"
         # Save response to db
