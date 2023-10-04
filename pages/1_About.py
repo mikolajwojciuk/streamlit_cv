@@ -7,4 +7,7 @@ st.sidebar.write(
     unsafe_allow_html=True,
 )
 
+st.sidebar.markdown(
+    "[![Title]('https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg')]('www.linkedin.com/in/mikołaj-wojciuk-72956a20b')"
+)
 st.header("About me")
