@@ -10,8 +10,8 @@ st.set_page_config(page_title="About", page_icon="🙋🏻‍♂️")
 st.sidebar.markdown(
     "[![Title]('https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg')]('www.linkedin.com/in/mikołaj-wojciuk-72956a20b')"
 )
-column1 = st.columns(1)
-column1.markdown(
+_, column2, _ = st.columns(3)
+column2.markdown(
     "[![Title]('https://content.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Bug.svg.original.svg')]('www.linkedin.com/in/mikołaj-wojciuk-72956a20b')"
 )
 st.header("About me")
