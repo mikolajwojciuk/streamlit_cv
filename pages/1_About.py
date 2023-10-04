@@ -18,5 +18,5 @@ button_code = f"""
             </a>
         </p>"""
 
-st.markdown(button_code, unsafe_allow_html=True)
+st.sidebar.markdown(button_code, unsafe_allow_html=True)
 st.header("About me")
