@@ -27,8 +27,8 @@ st.write(
     """This demo was originally created as my playground for experiments with LangChain. 
     Currently, it uses LangChain and FAISS to tell the users a bit about myself as an addition to LinkedIn profile or CV. 
     It is built with Streamlit as it provides appealing interface and offers broad range of possibilities when it comes to presenting the data and experiments outputs.
-
-    The data processing relies on finding similar documents among those previously prepared by me, containing answers to typical 'recruitment' questions. The discovered documents are then used to generate responses using the OpenAI API.
+    The data processing relies on finding similar documents among those previously prepared by me, containing answers to typical 'recruitment' questions. 
+    The discovered documents are then used to generate responses using the OpenAI API.
 
 """
 )
